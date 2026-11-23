@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>자소서 작업실</title>
+  <meta name="description" content="경험 메모로 시작하는 AI 자기소개서 작성 도구">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="stylesheet" href="/css/fonts.css">
+  <link rel="stylesheet" href="/css/tokens.css">
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/layout.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <script type="module" src="/js/main.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#editor-section">본문 작성으로 건너뛰기</a>
+
+  <header class="nav-bar">
+    <div class="container nav-bar__inner">
+      <span class="nav-bar__logo">자소서 작업실</span>
+      <div class="nav-bar__actions">
+        <span class="nav-bar__status" id="save-status" aria-live="polite"></span>
+        <button type="button" class="btn btn--utility" id="export-btn">TXT 내보내기</button>
+        <button type="button" class="btn btn--utility" id="reset-btn">전체 초기화</button>
+      </div>
+    </div>
+  </header>
+
+  <section class="intro-band" aria-labelledby="intro-title">
+    <div class="container">
+      <p class="intro-band__eyebrow">AI 자기소개서 작성 도구</p>
+      <h1 class="intro-band__title" id="intro-title">경험 메모에서 시작하는 자소서</h1>
+      <p class="intro-band__desc">지원 정보와 경험을 적으면 글자수에 맞춘 초안, 피드백, 다듬기를 도와드려요.</p>
+    </div>
+  </section>
+
+  <main class="workspace">
+    <div class="container workspace__grid">
+
+      <!-- 왼쪽: 지원 정보 + 문항 목록 -->
+      <aside class="workspace__sidebar" aria-label="지원 정보와 문항 목록">
+        <section class="card" aria-labelledby="profile-title">
+          <h2 class="card__title" id="profile-title">지원 정보</h2>
+          <div class="field">
+            <label class="field__label" for="company-input">회사명 <span class="field__required">필수</span></label>
+            <input class="input" id="company-input" type="text" maxlength="50" autocomplete="organization" placeholder="예: 한국전력거래소">
+            <p class="field__error" id="company-input-error" hidden></p>
+          </div>
+          <div class="field">
+            <label class="field__label" for="role-input">지원 직무 <span class="field__required">필수</span></label>
+            <input class="input" id="role-input" type="text" maxlength="50" placeholder="예: 전력계통 운영">
+            <p class="field__error" id="role-input-error" hidden></p>
+          </div>
+          <div class="field">
+            <label class="field__label" for="posting-input">채용공고·인재상 <span class="field__optional">선택</span></label>
+            <textarea class="input input--textarea" id="posting-input" rows="5" maxlength="3000" placeholder="채용공고의 직무 설명이나 인재상을 붙여 넣으면 초안에 반영돼요."></textarea>
+            <p class="field__count" id="posting-input-count">0 / 3,000</p>
+            <p class="field__error" id="posting-input-error" hidden></p>
+          </div>
+        </section>
+
+        <section class="card" aria-labelledby="question-list-title">
+          <div class="card__header">
+            <h2 class="card__title" id="question-list-title">문항 목록</h2>
+            <span class="badge-pill" id="question-count">1 / 5</span>
+          </div>
+          <ul class="question-list" id="question-list"></ul>
+          <button type="button" class="btn btn--utility btn--block" id="add-question-btn">+ 문항 추가</button>
+        </section>
+      </aside>
+
+      <!-- 가운데: 문항 설정 + 본문 에디터 -->
+      <section class="workspace__editor" id="editor-section" aria-labelledby="editor-title" tabindex="-1">
+        <div class="card">
+          <div class="card__header">
+            <h2 class="card__title" id="editor-title">문항 1</h2>
+            <button type="button" class="btn btn--text-danger" id="delete-question-btn">문항 삭제</button>
+          </div>
+          <div class="field">
+            <label class="field__label" for="question-input">문항 내용 <span class="field__required">필수</span></label>
+            <textarea class="input input--textarea" id="question-input" rows="2" maxlength="300" placeholder="예: 지원 직무와 관련된 경험을 바탕으로 본인의 강점을 기술해 주세요."></textarea>
+            <p class="field__count" id="question-input-count">0 / 300</p>
+            <p class="field__error" id="question-input-error" hidden></p>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label class="field__label" for="char-limit-input">글자수 제한</label>
+              <input class="input" id="char-limit-input" type="number" min="100" max="3000" step="10" inputmode="numeric">
+              <p class="field__error" id="char-limit-input-error" hidden></p>
+            </div>
+            <div class="field">
+              <label class="field__label" for="count-mode-select">세는 기준</label>
+              <select class="input input--select" id="count-mode-select">
+                <option value="with_spaces">공백 포함</option>
+                <option value="without_spaces">공백 제외</option>
+              </select>
+            </div>
+            <div class="field field--checkbox">
+              <input type="checkbox" id="include-title-checkbox">
+              <label for="include-title-checkbox">소제목 포함</label>
+            </div>
+          </div>
+
+          <details class="star" id="experience-details" open>
+            <summary class="star__summary">경험 메모 (STAR)</summary>
+            <p class="star__help">AI는 여기 적은 사실만 사용해요. 숫자·기간·역할을 구체적으로 적을수록 좋아요.</p>
+            <div class="field">
+              <label class="field__label" for="exp-situation"><span class="dot dot--sky" aria-hidden="true"></span>상황·과제 <span class="field__optional">선택</span></label>
+              <textarea class="input input--textarea" id="exp-situation" rows="3" maxlength="1000" placeholder="언제, 어디서, 어떤 문제나 목표가 있었나요?"></textarea>
+              <p class="field__count" id="exp-situation-count">0 / 1,000</p>
+            </div>
+            <div class="field">
+              <label class="field__label" for="exp-action"><span class="dot dot--orange" aria-hidden="true"></span>행동 <span class="field__required">필수</span></label>
+              <textarea class="input input--textarea" id="exp-action" rows="3" maxlength="1000" placeholder="내가 직접 한 일은 무엇인가요?"></textarea>
+              <p class="field__count" id="exp-action-count">0 / 1,000</p>
+              <p class="field__error" id="exp-action-error" hidden></p>
+            </div>
+            <div class="field">
+              <label class="field__label" for="exp-result"><span class="dot dot--green" aria-hidden="true"></span>결과 <span class="field__optional">선택</span></label>
+              <textarea class="input input--textarea" id="exp-result" rows="3" maxlength="1000" placeholder="어떤 변화가 있었나요? 숫자가 있으면 함께 적어 주세요."></textarea>
+              <p class="field__count" id="exp-result-count">0 / 1,000</p>
+            </div>
+            <div class="field">
+              <label class="field__label" for="exp-lesson"><span class="dot dot--purple" aria-hidden="true"></span>배운 점 <span class="field__optional">선택</span></label>
+              <textarea class="input input--textarea" id="exp-lesson" rows="2" maxlength="1000" placeholder="이 경험으로 무엇을 배웠고, 입사 후 어떻게 쓸 수 있나요?"></textarea>
+              <p class="field__count" id="exp-lesson-count">0 / 1,000</p>
+            </div>
+          </details>
+        </div>
+
+        <div class="card editor-card">
+          <label class="card__title" for="body-editor">본문</label>
+          <textarea class="input input--editor" id="body-editor" rows="16" maxlength="5000" placeholder="직접 쓰거나, 아래 [AI 초안 생성]을 눌러 시작하세요."></textarea>
+          <p class="counter" id="char-counter" aria-live="polite">
+            <span id="count-with-spaces"></span>
+            <span class="counter__divider" aria-hidden="true">·</span>
+            <span id="count-without-spaces"></span>
+            <span class="counter__status" id="count-status"></span>
+          </p>
+          <p class="notice notice--warning" id="placeholder-notice" hidden></p>
+          <div class="toolbar">
+            <div class="toolbar__row">
+              <button type="button" class="btn btn--primary" id="generate-btn">AI 초안 생성</button>
+              <button type="button" class="btn btn--secondary" id="feedback-btn">AI 피드백 받기</button>
+            </div>
+            <div class="toolbar__row" role="group" aria-labelledby="revise-label">
+              <span class="toolbar__label" id="revise-label">다듬기</span>
+              <button type="button" class="btn btn--utility" id="revise-concise-btn">간결하게</button>
+              <button type="button" class="btn btn--utility" id="revise-specific-btn">구체적으로</button>
+              <button type="button" class="btn btn--utility" id="revise-fit-btn">글자수 맞추기</button>
+            </div>
+            <div class="toolbar__row">
+              <button type="button" class="btn btn--utility" id="copy-btn">복사</button>
+              <button type="button" class="btn btn--utility" id="restore-btn">직전 버전 복원</button>
+            </div>
+          </div>
+          <p class="ai-status" id="ai-status" aria-live="polite"></p>
+        </div>
+      </section>
+
+      <!-- 오른쪽: AI 피드백 -->
+      <aside class="workspace__feedback" id="feedback-panel" aria-labelledby="feedback-title">
+        <div class="card">
+          <div class="card__header">
+            <h2 class="card__title" id="feedback-title">AI 피드백</h2>
+            <span class="badge-pill badge-pill--warning" id="feedback-stale" hidden>본문 수정됨</span>
+          </div>
+          <div class="empty-state" id="feedback-empty">
+            <p class="empty-state__title">아직 피드백이 없어요</p>
+            <p class="empty-state__desc">본문을 50자 이상 작성한 뒤 [AI 피드백 받기]를 눌러 보세요.</p>
+          </div>
+          <div class="skeleton" id="feedback-loading" hidden aria-hidden="true">
+            <div class="skeleton__line"></div><div class="skeleton__line"></div><div class="skeleton__line skeleton__line--short"></div>
+          </div>
+          <div class="feedback" id="feedback-content" hidden>
+            <p class="feedback__summary" id="feedback-summary"></p>
+            <ul class="score-list" id="feedback-scores"></ul>
+            <h3 class="feedback__heading">강점</h3>
+            <ul class="feedback__list" id="feedback-strengths"></ul>
+            <h3 class="feedback__heading">개선점</h3>
+            <ul class="feedback__list" id="feedback-improvements"></ul>
+            <h3 class="feedback__heading">수정 예시</h3>
+            <ul class="example-list" id="feedback-examples"></ul>
+          </div>
+        </div>
+      </aside>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>입력한 내용은 이 브라우저에만 저장되며, AI 기능을 사용할 때만 OpenAI로 전송돼요.</p>
+      <p>주민등록번호, 연락처 같은 민감한 개인정보는 입력하지 마세요. AI 결과는 반드시 직접 확인 후 사용하세요.</p>
+    </div>
+  </footer>
+
+  <dialog class="dialog" id="confirm-dialog" aria-labelledby="confirm-title" aria-describedby="confirm-message">
+    <form method="dialog" class="dialog__body">
+      <h2 class="dialog__title" id="confirm-title"></h2>
+      <p class="dialog__message" id="confirm-message"></p>
+      <div class="dialog__actions">
+        <button class="btn btn--secondary" id="confirm-cancel-btn" value="cancel">취소</button>
+        <button class="btn btn--primary" id="confirm-ok-btn" value="ok">확인</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div class="toast-region" id="toast-region" aria-live="polite" aria-atomic="true"></div>
+</body>
+</html>

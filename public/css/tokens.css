@@ -1,0 +1,78 @@
+/* 참고: DESIGN-notion.md. "추가 정의"는 참고 파일에 없어 이 프로젝트에서 정한 값 */
+:root {
+  /* ── 기본 색 ── */
+  --color-primary: #0075de;          /* 유일한 강조색: 주요 버튼, 링크, 선택, 포커스 */
+  --color-primary-active: #005bab;   /* 주요 버튼 hover/누름 */
+  --color-secondary: #213183;        /* 상단 소개 띠 배경 (1곳만) */
+  --color-on-primary: #ffffff;
+  --color-canvas: #ffffff;           /* 상단 내비게이션 바 */
+  --color-canvas-soft: #f6f5f4;      /* 페이지 바탕, 푸터 */
+  --color-surface: #ffffff;          /* 카드, 입력창 */
+
+  /* ── 글자 색 ── */
+  --color-ink: rgba(0, 0, 0, 0.95);  /* 제목·본문 (참고 파일: 검정 95%) */
+  --color-ink-secondary: #31302e;    /* 보조 본문, 푸터 글자 */
+  --color-ink-muted: #615d59;        /* 안내문, 글자수 */
+  --color-ink-faint: #a39e98;        /* 입력창 placeholder, 비활성 */
+
+  /* ── 선 ── */
+  --color-hairline: #e6e6e6;         /* 카드 테두리, 구분선 */
+  --color-input-border: #dddddd;     /* 입력창 테두리 (참고 파일 rgb(221,221,221)) */
+
+  /* ── 장식 전용 색 (점·막대 장식에만, 버튼·배경 금지) ── */
+  --color-accent-sky: #62aef0;
+  --color-accent-purple: #d6b6f6;
+  --color-accent-orange: #dd5b00;
+  --color-accent-teal: #2a9d99;
+  --color-accent-green: #1aae39;
+
+  /* ── 상태 색 (추가 정의: 참고 파일에 상태 색 없음, 흰 바탕 대비 4.5:1 이상으로 정함) ── */
+  --color-success: #127a2b;          /* 글자수 적정 */
+  --color-warning: #793400;          /* 보완 필요 안내 (참고 파일 accent-orange-deep) */
+  --color-danger: #c9372c;           /* 에러, 글자수 초과, 삭제 */
+  --color-danger-soft: #fdf0ef;      /* 에러 입력창 배경 */
+  --color-selected: #f1f0ee;         /* 선택된 문항 행 배경 (추가 정의) */
+
+  /* ── 글꼴 ── */
+  --font-family-base: 'Paperozi', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', system-ui, 'Segoe UI', sans-serif;
+
+  /* ── 간격 (참고 파일 spacing, 기본 단위 8px) ── */
+  --space-xxs: 4px;
+  --space-xs: 8px;
+  --space-sm: 12px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 28px;
+  --space-xxl: 32px;
+  --space-section: 48px;             /* 추가 정의: 큰 영역 사이 */
+
+  /* ── 모서리 ── */
+  --radius-xs: 4px;                  /* 입력창, 작은 태그 */
+  --radius-sm: 5px;                  /* 목록 행 */
+  --radius-md: 8px;                  /* 보조 버튼 */
+  --radius-lg: 12px;                 /* 카드 */
+  --radius-xl: 16px;                 /* 다이얼로그, 토스트, 빈 상태 */
+  --radius-full: 9999px;             /* 주요·보조 버튼, 배지 */
+
+  /* ── 그림자 (참고 파일 Elevation) ── */
+  --shadow-1:
+    0 0.175px 1.041px rgba(0, 0, 0, 0.01),
+    0 0.8px 2.925px rgba(0, 0, 0, 0.02),
+    0 2.025px 7.847px rgba(0, 0, 0, 0.027),
+    0 4px 18px rgba(0, 0, 0, 0.04);
+  --shadow-2:
+    0 0.175px 1.041px rgba(0, 0, 0, 0.01),
+    0 0.8px 2.925px rgba(0, 0, 0, 0.02),
+    0 2.025px 7.847px rgba(0, 0, 0, 0.027),
+    0 4px 18px rgba(0, 0, 0, 0.04),
+    0 23px 52px rgba(0, 0, 0, 0.05);
+
+  /* ── 레이아웃 (추가 정의) ── */
+  --container-max: 1300px;
+  --nav-height: 56px;
+  --sidebar-width: 280px;
+  --feedback-width: 360px;
+  --z-nav: 100;
+  --z-toast: 300;
+  --transition-fast: 120ms ease;
+}
